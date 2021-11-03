@@ -1,6 +1,7 @@
 # TypeScript
 
 **TypeScript란 무엇인가**
+
 <br />
 
 Typed JavaScript at any Scale
@@ -14,7 +15,7 @@ TypeSciprt = Language
 - 정리
     * 타입스크립트는 'Programming Language' 
     * 타입스크립트는 'Compiled Language'
-    - 전통적인 Compiled Language랑 다른 점이 많아 'Transpile'라는 용어를 사용하기도 함
+    * 전통적인 Compiled Language랑 다른 점이 많아 'Transpile'라는 용어를 사용하기도 함
     * 자바스크립트는 Interpreted Language
 
 Compile과 Interpreted의 차이
