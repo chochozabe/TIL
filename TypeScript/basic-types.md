@@ -110,15 +110,60 @@ console.log(obj[sym]); // "value"
 - 따로 설정을 하지 않으면 모든 타입의 서브타입으로 사용할 수 있다
 - tsconfig 파일에서 strictNullChecks 옵션을 활성화하면, null과 undefined는 void나 자기 자신들에게만 할당할 수 있다.
     - 이 경우, null과 undefined를 할당할 수 있게 하려면, union Type(|)을 이용해야 한다.
-
-> null in JavaScript <br />
-    - 무언가가 있지만 사용할 준비가 덜 된 상태 <br />
-    - null 타입은 null 값만 가질 수 있다 <br />
-    - 런타임에서 typeof 연산자를 이용해서 null 타입의 값을 찍어내면 object 타입이 출력된다<br />
+- null in JavaScript
+    - 무언가가 있지만 사용할 준비가 덜 된 상태 
+    - null 타입은 null 값만 가질 수 있다 
+    - 런타임에서 typeof 연산자를 이용해서 null 타입의 값을 찍어내면 object 타입이 출력된다
+- undefined in JavaScript
+    - 무언가가 아예 준비가 안된 상태
+    - 값을 할당하지 않은 변수는 undefined의 값을 가진
+    - obejct의 property가 없을때도 undefined
+    - 런타입에서 typeof 연산자를 이용해서 undefined 타입의 값을 찍어내면 undefined 타입이 출력된다
+    
 <br />
 
-> undefined in JavaScript <br />
-    - 무언가가 아예 준비가 안된 상태 <br />
-    - 값을 할당하지 않은 변수는 undefined의 값을 가진다<br />
-    - obejct의 property가 없을때도 undefined <br />
-    - 런타입에서 typeof 연산자를 이용해서 undefined 타입의 값을 찍어내면 undefined 타입이 출력된다<br />
+**Object**
+ - 직접 값을 가지지않고, 주소값을 가짐
+ - primitive type이 아닌것을 나타내고 싶을 때 사용하는 타입
+
+```tsx
+// create by object literal
+const person1 = {name : 'Mark', age : 39};
+// type {name : string, age: number}
+
+// create by Object.create -> 전역 내장객체
+const person2 = Object.create({name:'Mark', age:39});
+// type (o: object | null)
+```
+
+<br />
+
+**Array**
+ - 같은 타입의 요소들을 모아둔 자료형
+ - 사용법
+    - Array<타입>
+    - 타입[]
+
+```tsx
+let list1: number[] = [1,2,3];
+let list2: Array<number> = [1,2,3]; // 의미는 동일하나 jsx나 tsx에서 충돌할 가능성이 있기때문에 위의 표현법을 추천
+let list3:(number | string)[] = [1,2,3,"4"]; // 이런 방법으로도 사용 가능
+```
+<br />
+
+**Tuple**
+ - 길이와 각 자리의 타입이 정확히 정해져있음
+
+```tsx
+let x: [string, number];
+x = ["Mark", 39];
+x = [24, "Hi"]; // Error
+x = ["hello", 2022, "year"]; // Error
+x[2] = "world"; // Error
+```
+
+```tsx
+const person: [string, number] = ["Mark", 39];
+const [first, second] = person;
+const [first, second, third] = person; // Error
+```
