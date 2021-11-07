@@ -24,9 +24,8 @@ TypeScript에서는 JavaScript와 동일한 타입을 지원하며, 추가적으
 <br />
 
 **TypeScript 에서 프로그램 작성을 위해 기본 제공하는 데이터 타입**
-<br />
-* 사용자가 만든 타입은 결국 하위의 기본 자료형들로 쪼개진다.
-* JavaScript 기본 자료형을 포함 (superset)
+- 사용자가 만든 타입은 결국 하위의 기본 자료형들로 쪼개진다.
+- JavaScript 기본 자료형을 포함 (superset)
 - ECMAScript 표준에 따른 기본 자료형은 6가지
     - Boolean
     - number
@@ -100,7 +99,6 @@ let obj = {
 
 console.log(obj[sym]); // "value"
 ```
-
 <br />
 
 **Undefined & Null**
@@ -135,7 +133,6 @@ const person1 = {name : 'Mark', age : 39};
 const person2 = Object.create({name:'Mark', age:39});
 // type (o: object | null)
 ```
-
 <br />
 
 **Array**
@@ -167,3 +164,92 @@ const person: [string, number] = ["Mark", 39];
 const [first, second] = person;
 const [first, second, third] = person; // Error
 ```
+<br />
+
+**Any**
+ - 어떤 타입이든 될 수 있음
+ - 최대한 쓰지 않는다
+- 컴파일 타임에 타입 체크가 정상적으로 이뤄지지 않기 때문
+ - 컴파일 옵션 중에 any를 써야하는데 쓰지안흔ㄴ 경우 오류를 내는 옵션이 있음
+- noImplicitAny
+ - log로 표현되는 역할만 하는 경우 any 가능
+- any는 개체를 통해 전파
+```tsx
+let looselyTyped: any = {};
+const d = looselyTyped.a.b.c.d;  // Not Error
+// d의 타입은 any
+```
+ - 편의를 위해 쓰는 순간 타입 안전성을 잃는다
+```tsx
+function leakingany(obj : any) {
+const a: number = obj.num; // any로 넘어온 객체의 값에 타입을 지정해줌으로써 누수를 막음
+const b = a+1;
+return b;
+}
+
+const c = leakingAny({num:0})
+c.indexOf("0"); // Error : Number에는 indexOf라는 내장함수가 없음
+``` 
+<br />
+
+**Unknown**
+ - Typescript 3.0 버전부터 지원
+ - any와 짝으로 any보다 Type-safe한 타입
+    - any와 같이 아무거나 할당할 수 있다.
+     - unknown타입으로 선언된 변수를 사용하려면 컴파일러가 타입을 추론할 수 있게끔 타입의 유형을 좁히거나 타입을 확정해주어야한다. 
+
+```tsx
+declare const maybe: unknown;
+
+const aNumber: number = maybe;
+
+if(maybe === true) {
+    const aBoolean: boolean = maybe;
+
+    const aString: string = maybe; // Error
+}
+
+if(typeof maybe === 'string') {
+    const aString: string = maybe;
+
+    const aBoolean: boolean = maybe; // Error
+}
+```
+<br />
+
+**Never**
+ - 모든 타입의 서브타입, 모든 타입에 할당 할 ㅅ ㅜ있다
+ - 하지만 never는 어느것도 할당할 수 없음(any 포함)
+ - 잘못된 타입을 넣는 실수를 막고자 할 때 사용하기도 함
+ - 일반적으로 return에 사용
+
+```tsx
+let a: string = "hello";
+if(typeof a !== 'string') {
+    a; // type never
+}
+
+declare const b: string | number;
+if(typeof b !== 'string') {
+    b; // type number
+}
+
+type Indexable<T> = T extends string ? T & {[index: string]: any} : never;
+const b: Indexable<{}> == ''; // Error
+```
+<br />
+
+**Void**
+ - 어떤 타입도 가지지 않는 빈 상태
+ - undefind와 동일
+ ```tsx
+function returnVoid(message: string): void {
+console.log(message);
+
+return; // void
+// return undefined; // 가능
+}
+
+const r: undefined = returnVoid("리턴이 없다."); // Error
+```
+ 
