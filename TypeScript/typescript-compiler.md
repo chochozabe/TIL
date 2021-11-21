@@ -143,3 +143,38 @@
 ...,
 }
 ```
+
+**compilesOptions**
+ - @type : typeroots, types
+
+    - TypesScript 2.0부터 사용 가능해진 내장 type definition 시스템
+    - 아무 설정을 안하면 node_modules/@types라는 모든 경로를 찾아서 사용
+    - typesRoots를 사용하면 배열 안에 들어있는 경로들 아래서만 가져옴
+    - types 를 사용하면 배열 안에 모듈 혹은 ./node_modules/@types/ 안의 모듈 이름에서 찾아옴
+      - [] 빈 배열은 이 시스템을 이용하지 않겠다는 의미
+    - typeRoots와 types는 같이 사용하지 않는다
+    - schema
+    ```tsx
+    {
+      ...,
+      "typeRoots": {
+        "description": "Specify multiple folders that act like `./node_modules/@types`.",
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string"
+        },
+        "markdownDescription": "Specify multiple folders that act like `./node_modules/@types`.\n\nSee more: https://www.typescriptlang.org/tsconfig#typeRoots"
+      },
+      "types": {
+        "description": "Specify type package names to be included without being referenced in a source file.",
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string"
+        },
+        "markdownDescription": "Specify type package names to be included without being referenced in a source file.\n\nSee more: https://www.typescriptlang.org/tsconfig#types"
+      },
+      ...,
+    }
+    ```
