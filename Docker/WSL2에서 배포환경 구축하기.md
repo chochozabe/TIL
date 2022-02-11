@@ -4,9 +4,9 @@
 
 1. [WSL/Linux/Docker 설치](#wsllinuxdocker-설치)
 
-2. [GitLab 설치](#gitlab-설치)
+2. [GitLab 설치 및 배포](#gitlab-설치-및-배포)
 
-3. [Jenkins 설치](#jenkins-설치)
+3. [Jenkins 설치 및 배포](#jenkins-설치-및-배포)
 
 ---
 
@@ -56,22 +56,31 @@
 docker pull gitlab/gitlab-ce
 
 docker run -d -p [사용할 포트]:80 --name [컨테이너명] --restart always \
--v [사용할 디렉토리 위치]:/etc/gitlab:Z -v [사용할 디렉토리 위치]:/var/log/gitlab:Z -v [사용할 디렉토리 위치]:/var/opt/gitlab:Z 
+-v [사용할 디렉토리 위치]/config:/etc/gitlab:Z -v [사용할 디렉토리 위치]/logs:/var/log/gitlab:Z \
+-v [사용할 디렉토리 위치]/data:/var/opt/gitlab:Z -v [사용할 디렉토리 위치]/config/ssl:/etc/gitlab/ssl:Z \
 gitlab/gitlab-ce
 ```
 
-- [gitlab 관리자 계정을 모를때](https://simryang.tistory.com/entry/gitlab-관리자-비밀번호-변경)
-
-  ```powershell
-  > docker exec -it [container_id] /bin/bash
-
-  # gitlab-rails console -e production
-
-  > user = User.where(id: 1).first
-  > user.password='변경할비밀번호'
-  > user.password_confirmation='변경할비밀번호'
-  > user.save!
-  ```
+- gitlab 관리자 계정 초기화
+    - gitlab 컨테이너 접속
+      ```shell
+      > docker exec -it [컨테이너명] /bin/bash
+      ```
+    - rails console 접속
+      ```shell 
+      # gitlab-rails console -e production
+      ```
+    - root 계정 찾기
+      ```shell
+      > user = User.where(id: 1).first
+      ```
+    - 비밀번호 변경
+      ```shell
+        > user.password='변경할비밀번호'
+        > user.password_confirmation='변경할비밀번호'
+        > user.save!
+      ```
+      💡 비밀번호가 너무 짧으면 변경되지않으니 주의
 
 <br>
 
